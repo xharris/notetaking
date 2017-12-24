@@ -465,11 +465,32 @@
   right: 0px;
   left: 0px;
 }
-#page-container .textbox {
+.drag-container {
   position: absolute;
+  z-index: 9;
+  background-color: transparent;
+  border: 1px dashed #78909C;
+  text-align: center;
   width: 100px;
   height: 100px;
-  border: 1px solid black;
+  resize: both;
+  overflow: hidden;
+}
+.drag-container > .drag-handle {
+  display: none;
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+}
+.drag-container > .content {
+  width: 100%;
+  height: 100%;
+}
+#page-container .textbox {
+  width: 100%;
+  height: 100%;
 }
 :root {
   --page-width: 0px;
@@ -532,6 +553,7 @@ body {
   text-align: center;
 }
 #edit-space #page-container .page {
+  margin-bottom: 15px;
   position: relative;
   display: inline-block;
   width: var(--page-width);

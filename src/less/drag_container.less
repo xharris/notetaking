@@ -1,0 +1,25 @@
+.drag-container {
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    border: 1px dashed #78909C;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    resize: both;
+    overflow: hidden;
+
+    > .drag-handle {
+        display: none;
+        padding: 10px;
+        cursor: move;
+        z-index: 10;
+        background-color: #2196F3;
+        color: #fff;
+    }
+
+    > .content {
+        width: 100%;
+        height: 100%;
+    }
+}

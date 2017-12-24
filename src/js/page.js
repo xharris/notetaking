@@ -1,5 +1,3 @@
-// if left < window.width; make left = 0
-
 class Page {
 	constructor (app, page, width, height, number) {
 		this.width = width;
@@ -8,7 +6,7 @@ class Page {
 		this.guid = guid();
 
 		this.el_page = document.createElement("div");
-		this.el_page.style.top = ((this.height+30)*this.number)+"px";
+		this.el_page.style.top = ((this.height)*this.number)+"px";
 		this.el_page.classList.add("page");
 		this.el_page.dataset.guid = this.guid;
 

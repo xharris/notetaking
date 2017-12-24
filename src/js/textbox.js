@@ -4,14 +4,19 @@ class Textbox {
 		this.y = y;
 		this.guid = guid();
 
-		this.el_page = document.createElement("div");
-		this.el_page.style.top = this.y+"px";
-		this.el_page.style.left = this.x+"px";
-		this.el_page.classList.add("textbox");
-		this.el_page.dataset.guid = this.guid;
+		this.el_textbox = document.createElement("div");
+		this.el_textbox.classList.add("textbox");
+		this.el_textbox.ondblclick = this.edit;
 
-		page.appendChild(this.el_page);
+		this.drag_box = new DragContainer(this.x, this.y);
+		this.drag_box.appendTo(page);
+
+		this.drag_box.getContentElement().appendChild(this.el_textbox);
 
 		console.log("Textbox("+x+", "+y+"):"+this.guid);
+	}
+
+	edit (ev) {
+		
 	}
 }

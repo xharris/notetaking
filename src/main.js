@@ -6,6 +6,7 @@ var app = {
 	elements: [],
 	bookmarks: [],
 	placer_type: '',
+	skip_click: false, // used for when clicking out of an element
 
 	settings: {
 		page_width: 8
@@ -57,9 +58,15 @@ var app = {
 	},
 
 	onPageClick: function(ev) {
-		console.log(ev.srcElement);
-		var edit_space_rect = ev.srcElement.getBoundingClientRect();
-		app.placeSelectedElement(ev.srcElement, ev.clientX - edit_space_rect.x, ev.clientY - edit_space_rect.y)
+		if (ev.target.classList.contains("page")) {
+			if (app.skip_click) app.skip_click = false;
+			else {
+				var edit_space_rect = ev.srcElement.getBoundingClientRect();
+				app.placeSelectedElement(ev.srcElement, ev.clientX - edit_space_rect.x, ev.clientY - edit_space_rect.y)
+			}
+		} else {
+			app.skip_click = true;
+		}
 	}
 }
 
