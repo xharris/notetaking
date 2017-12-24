@@ -59,13 +59,19 @@ var app = {
 
 	onPageClick: function(ev) {
 		if (ev.target.classList.contains("page")) {
-			if (app.skip_click) app.skip_click = false;
-			else {
+			// click to remove focus from current element
+			if (app.skip_click) {
+				app.skip_click = false;
+				dispatchEvent("loseFocus", {except: except_guid});
+
+			} else {
 				var edit_space_rect = ev.srcElement.getBoundingClientRect();
 				app.placeSelectedElement(ev.srcElement, ev.clientX - edit_space_rect.x, ev.clientY - edit_space_rect.y)
 			}
 		} else {
 			app.skip_click = true;
+			var except_guid = ev.target.closest(".drag-container").getElementsByClassName('content')[0].children[0].dataset.guid;
+			dispatchEvent("loseFocus", {except: except_guid});
 		}
 	}
 }

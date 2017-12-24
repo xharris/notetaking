@@ -10,12 +10,16 @@
     overflow: hidden;
 
     > .drag-handle {
-        display: none;
         padding: 10px;
         cursor: move;
         z-index: 10;
-        background-color: #2196F3;
-        color: #fff;
+        background-color: transparent;
+        position: absolute;
+        top: 0px; left: 0px; bottom: 15px; right: 15px;
+
+        &[data-can_drag="false"] {
+            display: none;
+        }
     }
 
     > .content {

@@ -477,12 +477,18 @@
   overflow: hidden;
 }
 .drag-container > .drag-handle {
-  display: none;
   padding: 10px;
   cursor: move;
   z-index: 10;
-  background-color: #2196F3;
-  color: #fff;
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 15px;
+  right: 15px;
+}
+.drag-container > .drag-handle[data-can_drag="false"] {
+  display: none;
 }
 .drag-container > .content {
   width: 100%;
@@ -491,6 +497,9 @@
 #page-container .textbox {
   width: 100%;
   height: 100%;
+}
+#page-container .textbox:not(.edit-mode) {
+  pointer-events: none;
 }
 :root {
   --page-width: 0px;
