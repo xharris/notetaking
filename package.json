@@ -1,11 +1,20 @@
-{ 
-	"name": "notetaking",
-	"description": "take notes",
-	"main": "src/index.html",
-	"devDependencies": {
-		"nwjs" : "1.4.4"
-	},
-	"scripts": {
-		"start": "nw ."
-	}
+{
+  "name": "notetaking",
+  "description": "take notes",
+  "main": "src/index.html",
+  "window": {
+    "frame": false,
+    "transparent": true
+  },
+  "devDependencies": {
+    "nwjs": "1.4.4",
+    "lessc": "2.7.3"
+  },
+  "scripts": {
+    "less": "lessc src/less/main.less src/main.css",
+    "start": "npm run less & nw ."
+  },
+  "dependencies": {
+    "mdi": "^2.1.19"
+  }
 }

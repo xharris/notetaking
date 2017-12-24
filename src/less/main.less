@@ -1,0 +1,41 @@
+@import "variables";
+@import "../blanke-kit/blanke-ui";
+
+html, body {
+	margin: 0;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+html {
+	position: absolute;
+	left: 0px; right: 0px; top: 0px; bottom: 0px;
+}
+
+body {
+	.win-drag();
+
+	width: 100%;
+	height: 100%;
+	background-color: @window-background;
+	padding: @window-padding;
+	padding-top: @title-bar-height;
+}
+
+#title-buttons {
+	.win-nodrag();
+
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	margin: 5px;
+
+	.ui-button-rect {
+		width: 24px;
+		padding: 5px;
+	}
+}
+
+#edit-space {
+	width: 100%;
+	height: 100%;
+}
