@@ -7,12 +7,11 @@
     "transparent": true
   },
   "devDependencies": {
-    "nwjs": "1.4.4",
     "lessc": "2.7.3"
   },
   "scripts": {
     "less": "lessc src/less/main.less src/main.css",
-    "start": "npm run less & nw ."
+    "nw": "nw ."
   },
   "dependencies": {
     "mdi": "^2.1.19"

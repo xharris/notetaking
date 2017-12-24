@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script src="includes/length.min.js"></script>
+		<script src="blanke-kit/blanke.js"></script>
+
+		<script src="js/textbox.js"></script>
+		
+		<script src="js/page.js"></script>
 		<script src="main.js"></script>
 
 		<link rel="stylesheet" type="text/css" media="all" href="../node_modules/mdi/css/materialdesignicons.min.css"/>
@@ -12,7 +18,27 @@
 		<div id="title-buttons" class="ui-btn-group">
 			<button id="btn-close" class="ui-button-rect" onclick="app.close()"><i class="mdi mdi-window-close"></i></button>			
 		</div>
-		<div id="edit-space"></div>
+
+		<div id="edit-space">
+			<div class="page-tools ui-btn-group">
+				<div id="btn-add-textbox" class="ui-checkbox">
+					<input type="checkbox" data-type="Textbox">
+					<i class="mdi mdi-cursor-text"></i>
+				</div>
+				<div id="btn-add-equation" class="ui-checkbox">
+					<input type="checkbox" data-type="Equation">
+					<i class="mdi mdi-function"></i>
+				</div>
+			</div>
+
+			<div class="doc-tools ui-btn-group">
+				<button id="btn-new-bookmark" class="ui-button-sphere" onclick="app.addBookmark()"><i class="mdi mdi-bookmark-plus"></i></button>
+				<button id="btn-new-page" class="ui-button-sphere" onclick="app.addPage()"><i class="mdi mdi-file-document"></i></button>
+			</div>
+
+			<div id="page-container"></div>
+		</div>
+
 
 	</body>
 </html>

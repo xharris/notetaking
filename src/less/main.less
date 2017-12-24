@@ -1,5 +1,11 @@
-@import "variables";
 @import "../blanke-kit/blanke-ui";
+@import "variables";
+@import "elements";
+
+:root {
+	--page-width: 0px;
+	--page-height: 0px;
+}
 
 html, body {
 	margin: 0;
@@ -27,7 +33,7 @@ body {
 	position: absolute;
 	top: 0px;
 	right: 0px;
-	margin: 5px;
+	margin: @window-padding;
 
 	.ui-button-rect {
 		width: 24px;
@@ -36,6 +42,43 @@ body {
 }
 
 #edit-space {
+	.win-nodrag();
+
 	width: 100%;
 	height: 100%;
+	position: relative;
+
+	.page-tools {
+		position: absolute;
+		top: @window-padding;
+		left: 10px;
+		z-index: 100;
+	}
+
+	.doc-tools {
+		position: absolute;
+		top: @window-padding;
+		right: 15px;
+		z-index: 100;
+	}
+
+	#page-container {
+		position: relative;
+		height: 100%;
+		overflow: auto;
+		text-align: center;
+
+		.page {
+			&:last-child {
+				margin-bottom: 30px;
+			}
+
+			position: relative;
+			display: inline-block;
+			width: var(--page-width);
+			height: var(--page-height);
+			background-color: white;
+			box-shadow: @card-shadow;
+		}
+	}
 }
