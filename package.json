@@ -1,0 +1,11 @@
+{ 
+	"name": "notetaking",
+	"description": "take notes",
+	"main": "src/index.html",
+	"devDependencies": {
+		"nwjs" : "1.4.4"
+	},
+	"scripts": {
+		"start": "nw ."
+	}
+}
