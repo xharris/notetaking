@@ -13,7 +13,7 @@ function dragElement(elmnt) {
 
   function dragMouseDown(e) {
     e = e || window.event;
-
+    e.target.classList.add("dragging")
     if (e.target.dataset.can_drag) {
 
       var resize_handle_box = 15;
@@ -45,6 +45,7 @@ function dragElement(elmnt) {
   }
 
   function closeDragElement() {
+    DragContainer.resetBoxOutlines();
     /* stop moving when mouse button is released:*/
     document.onmouseup = null;
     document.onmousemove = null;
@@ -68,12 +69,24 @@ class DragContainer {
 
 		this.content = document.createElement("div");
 		this.content.classList.add("content");
+    this.content.dataset.can_drag = true;
 
 		this.drag_container.appendChild(this.handle);
 		this.drag_container.appendChild(this.content);
 
 		dragElement(this.drag_container);
 	}
+
+  static resetBoxOutlines() {
+    var drag_boxes = document.querySelectorAll(".drag-container");
+    [].forEach.call(drag_boxes, function(drag_box) {
+      drag_box.classList.remove("dragging");
+    });
+  }
+
+  static refreshBoxZIndexes() {
+    // puts smaller boxes at front
+  }
 
   setOnDblClick(func, ref_arg) {
     this.handle.ondblclick_ref = ref_arg;
@@ -88,12 +101,18 @@ class DragContainer {
 		return this.content;
 	}
 
+  setContentType(type) {
+    this.content.dataset.type=type;
+  }
+
   disableDrag() {
     this.handle.dataset.can_drag = false;
+    this.content.dataset.can_drag = false;
   }
 
   enableDrag() {
     this.handle.dataset.can_drag = true;
+    this.content.dataset.can_drag = true;
   }
 }
 

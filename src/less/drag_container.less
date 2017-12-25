@@ -2,12 +2,22 @@
     position: absolute;
     z-index: 9;
     background-color: transparent;
-    border: 1px dashed #78909C;
     text-align: center;
     width: 100px;
     height: 100px;
-    resize: both;
+    resize: none;
+    outline: none;
     overflow: hidden;
+
+    &:hover {
+        outline: 1px dashed #78909C;
+        resize: both;
+    }
+
+    &.dragging {
+        outline: 1px dashed #78909C;
+        resize: both;
+    }
 
     > .drag-handle {
         padding: 10px;

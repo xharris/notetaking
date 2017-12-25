@@ -76,7 +76,6 @@ var app = {
 	}
 }
 
-
 nwWIN.on('loaded', function() {
 	nwWIN.showDevTools();
 

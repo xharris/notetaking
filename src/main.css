@@ -469,12 +469,20 @@
   position: absolute;
   z-index: 9;
   background-color: transparent;
-  border: 1px dashed #78909C;
   text-align: center;
   width: 100px;
   height: 100px;
-  resize: both;
+  resize: none;
+  outline: none;
   overflow: hidden;
+}
+.drag-container:hover {
+  outline: 1px dashed #78909C;
+  resize: both;
+}
+.drag-container.dragging {
+  outline: 1px dashed #78909C;
+  resize: both;
 }
 .drag-container > .drag-handle {
   padding: 10px;
@@ -494,12 +502,56 @@
   width: 100%;
   height: 100%;
 }
-#page-container .textbox {
+#page-container .content[data-type="textbox"] .textbox {
   width: 100%;
   height: 100%;
+  outline: none;
+  border: none;
+  resize: none;
+  overflow: auto;
+  box-sizing: border-box;
+  background-color: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  line-height: 16px;
 }
-#page-container .textbox:not(.edit-mode) {
+#page-container .content[data-type="textbox"] .textbox:not(.edit-mode) {
   pointer-events: none;
+  overflow: hidden;
+}
+#page-container .content[data-type="textbox"] .markdown-body {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  text-align: initial;
+  pointer-events: none;
+}
+#page-container .content[data-type="textbox"] .markdown-body * {
+  font-size: 14px;
+  line-height: 16px;
+}
+#page-container .content[data-type="textbox"] .ql-toolbar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 0px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: height 1s ease-in-out;
+}
+#page-container .content[data-type="textbox"] .ql-toolbar button {
+  height: 20px;
+}
+#page-container .content[data-type="textbox"][data-can_drag="true"] .ql-toolbar {
+  height: 0px;
+}
+#page-container .content[data-type="textbox"][data-can_drag="true"] .textbox {
+  display: none;
+}
+#page-container .content[data-type="textbox"][data-can_drag="false"] .markdown-body {
+  display: none;
 }
 :root {
   --page-width: 0px;
