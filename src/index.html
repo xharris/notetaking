@@ -20,12 +20,11 @@
 		<link rel="stylesheet" type="text/css" media="all" href="../node_modules/mdi/css/materialdesignicons.min.css"/>
 		<link rel="stylesheet" type="text/css" href="main.css"/> 
 
+		<!-- BlankE kit -->
 		<script src="blanke-kit/blanke.js"></script>
 
 		<script src="js/drag_container.js"></script>
-		
 		<script src="js/textbox.js"></script>
-
 		<script src="js/page.js"></script>
 		<script src="main.js"></script>
 
@@ -33,6 +32,11 @@
 	</head>
 
 	<body>
+
+		<div id="doc-buttons" class="ui-btn-group">
+			<button id="btn-open" class="ui-button-rect" onclick="app.open()"><i class="mdi mdi-folder-outline"></i></button>
+			<button id="btn-save" class="ui-button-rect" onclick="app.save()"><i class="mdi mdi-content-save"></i></button>
+		</div>
 		
 		<div id="title-buttons" class="ui-btn-group">
 			<button id="btn-close" class="ui-button-rect" onclick="app.close()"><i class="mdi mdi-window-close"></i></button>			
@@ -57,7 +61,6 @@
 
 			<div id="page-container"></div>
 		</div>
-
 
 	</body>
 </html>

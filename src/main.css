@@ -470,8 +470,6 @@
   z-index: 9;
   background-color: transparent;
   text-align: center;
-  width: 100px;
-  height: 100px;
   resize: none;
   outline: none;
   overflow: hidden;
@@ -526,6 +524,7 @@
   text-align: initial;
   pointer-events: none;
 }
+#page-container .content[data-type="textbox"] .markdown-body,
 #page-container .content[data-type="textbox"] .markdown-body * {
   font-size: 14px;
   line-height: 16px;
@@ -578,6 +577,13 @@ body {
   padding: 5px;
   padding-top: 40px;
 }
+#doc-buttons {
+  -webkit-app-region: no-drag;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin: 5px;
+}
 #title-buttons {
   -webkit-app-region: no-drag;
   position: absolute;
@@ -585,7 +591,7 @@ body {
   right: 0px;
   margin: 5px;
 }
-#title-buttons .ui-button-rect {
+.ui-button-rect {
   width: 24px;
   padding: 5px;
 }

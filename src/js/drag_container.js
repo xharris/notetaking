@@ -114,5 +114,36 @@ class DragContainer {
     this.handle.dataset.can_drag = true;
     this.content.dataset.can_drag = true;
   }
+
+  remove () {
+    this.drag_container.remove();
+    this.handle.remove();
+    this.content.remove();
+  }
+
+  get x() {
+    console.log(this.drag_container.getBoundingClientRect());
+    return this.drag_container.getBoundingClientRect().x;
+  }
+
+  get y() {
+    return this.drag_container.getBoundingClientRect().y;
+  }
+
+  get width() {
+    return this.drag_container.getBoundingClientRect().width;
+  }
+
+  get height() {
+    return this.drag_container.getBoundingClientRect().height;
+  }
+
+  set width(val) {
+    this.drag_container.style.width = val+"px";
+  }
+
+  set height(val) {
+    this.drag_container.style.height = val+"px";
+  }
 }
 

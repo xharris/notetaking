@@ -1,4 +1,5 @@
 var nwGUI = require('nw.gui');
+var nwFS = require('fs');
 var nwWIN = nwGUI.Window.get();
 
 var app = {
@@ -7,6 +8,7 @@ var app = {
 	bookmarks: [],
 	placer_type: '',
 	skip_click: false, // used for when clicking out of an element
+	current_file: '',
 
 	settings: {
 		page_width: 8
@@ -25,7 +27,24 @@ var app = {
 	},
 
 	addPage: function() {
-		app.pages.push(new Page(app, app.settings.page_width, app.settings.page_height, app.pages.length));
+		var number = app.pages.length;
+		app.pages.push(new Page(app, app.settings.page_width, app.settings.page_height, number));
+	},
+
+	getPage: function(number) {
+		return app.pages[number];
+	},
+
+	clearDocument: function() {
+		for (var e = 0; e < app.elements.length; e++) {
+			app.elements[e].remove();
+		}
+		app.elements = [];
+
+		for (var p = 0; p < app.pages.length; p++) {
+			app.pages[p].remove();
+		}
+		app.pages = [];
 	},
 
 	addBookmark: function() {
@@ -41,9 +60,13 @@ var app = {
 		Equation: function(page, x, y) {}
 	},
 
+	load: {
+		Textbox: function(data) {app.elements.push(Textbox.load(app, data));}
+	},
+
 	placeSelectedElement: function(page, x, y) {
 		if (app.placer_type != '') {
-			app.elements.push(app.add[app.placer_type](page, x, y));
+			app.add[app.placer_type](page, x, y);
 		}
 	},
 
@@ -73,6 +96,56 @@ var app = {
 			var except_guid = ev.target.closest(".drag-container").getElementsByClassName('content')[0].children[0].dataset.guid;
 			dispatchEvent("loseFocus", {except: except_guid});
 		}
+	},
+
+	// give guid to child nodes
+	spreadGUID: function(element, in_guid) {
+		var child_nodes = element.getContentElement().children;
+		[].forEach.call(child_nodes, function(node){
+			node.dataset.guid = in_guid;
+		})
+	},
+
+	save: function() {
+		var save_data = {page_count:app.pages.length, elements:[]};
+
+		for (var a = 0; a < app.elements.length; a++) {
+			if (app.elements[a].save) {
+				var el_save_data = app.elements[a].save();
+				save_data.elements.push(el_save_data);
+			}
+		}
+
+		// write save file
+		if (app.current_file == '') {
+			// show save dialog
+			blanke.chooseFile("nwsaveas", function(file) {
+				app.current_file = file;
+				nwFS.writeFile(file, JSON.stringify(save_data));
+			}, "mynotes.bdoc");
+		} else {
+			nwFS.writeFile(app.current_file, JSON.stringify(save_data));
+		}
+	},
+
+	open: function() {
+		blanke.chooseFile("", function(file){
+			app.current_file = file;
+			nwFS.readFile(file, function(err, data){
+				app.clearDocument();
+
+				var load_data = JSON.parse(data);
+				// pages
+				for (var p = 0; p < load_data.page_count; p++) {
+					app.addPage();
+				}
+				// elements
+				for (var e = 0; e < load_data.elements.length; e++) {
+					var el_data = load_data.elements[e];
+					if (app.load[el_data.type]) app.load[el_data.type](el_data);
+				}
+			});
+		});
 	}
 }
 
@@ -87,8 +160,6 @@ nwWIN.on('loaded', function() {
 
 	// add first page
 	app.addPage();
-
-	app.getElement("#page-container .page").addEventListener("click", app.onPageClick);
 	app.getElement("#edit-space > .page-tools").addEventListener("click", function(ev){
 		ev.stopPropagation();
 
@@ -110,5 +181,4 @@ nwWIN.on('loaded', function() {
 			}
 		});
 	});
-
 });

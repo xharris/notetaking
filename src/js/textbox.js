@@ -3,7 +3,8 @@ class Textbox {
 		this.x = x;
 		this.y = y;
 		this.guid = guid();
-		this.text = "Text...";
+		this.text = "";
+		this.page = page;
 		this.markdown_options = {
 			simpleLineBreaks: true,
 			strikethrough: true,
@@ -25,7 +26,6 @@ class Textbox {
 	            return false;
 	        }
 	    },false);
-	    this.setText(this.text);
 
 	    this.el_markdown = document.createElement("div")
 	    this.el_markdown.classList.add("markdown-body");
@@ -41,6 +41,8 @@ class Textbox {
 		this.drag_box.getContentElement().appendChild(this.el_textbox);
 		this.drag_box.getContentElement().appendChild(this.el_markdown);
 		this.drag_box.setContentType("textbox");
+		this.drag_box.width = 150;
+		this.drag_box.height = 100;
 
 		/*
 		this.editor = new Quill(this.el_textbox, {
@@ -58,12 +60,7 @@ class Textbox {
 		});
 		*/
 
-		// give guid to child nodes
-		var child_nodes = this.drag_box.getContentElement().children;
-		var this_guid = this.guid;
-		[].forEach.call(child_nodes, function(node){
-			node.dataset.guid = this_guid;
-		})
+		app.spreadGUID(this.drag_box, this.guid);
 
 		var this_ref = this;
 		document.addEventListener("loseFocus", function(e) {
@@ -73,6 +70,7 @@ class Textbox {
 			}
 		});
 
+	    this.setText(this.text);
 		console.log("Textbox("+x+", "+y+"):"+this.guid);
 	}
 
@@ -82,7 +80,9 @@ class Textbox {
 	}
 
 	setText (text) {
+		this.text = text;
 		this.el_textbox.value = text;
+		this.refreshMarkdown();
 	}
 
 	enable () {
@@ -93,6 +93,10 @@ class Textbox {
 	disable () {
 		//this.editor.disable();
 		this.text = this.el_textbox.value;
+		this.refreshMarkdown();
+	}
+
+	refreshMarkdown() {
 		var converter = new showdown.Converter(this.markdown_options);
 		var html = converter.makeHtml(this.text);	
 		this.el_markdown.innerHTML = html;
@@ -108,5 +112,34 @@ class Textbox {
 		this.el_textbox.classList.remove("edit-mode")
 		this.disable();
 		this.drag_box.enableDrag();
+	}
+
+	remove () {
+		this.el_textbox.remove();
+		this.el_markdown.remove();
+		this.drag_box.remove();
+	}
+
+	save () {
+		return {
+			text: this.text,
+			type: 'Textbox',
+			x: this.drag_box.x - this.page.getBoundingClientRect().x,
+			y: this.drag_box.y - this.page.getBoundingClientRect().y,
+			width: this.drag_box.width,
+			height: this.drag_box.height,
+			page: this.page.dataset.number
+		};
+	}
+
+	static load (app, data) {
+		var page = app.getPage(parseInt(data.page)).el_page;
+
+		var textbox = new Textbox(app, page, data.x, data.y);
+		textbox.drag_box.width = data.width;
+		textbox.drag_box.height = data.height;
+		textbox.setText(data.text);
+
+		return textbox;
 	}
 }

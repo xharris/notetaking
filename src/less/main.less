@@ -28,6 +28,15 @@ body {
 	padding-top: @title-bar-height;
 }
 
+#doc-buttons {
+	.win-nodrag();
+
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 5px;
+}
+
 #title-buttons {
 	.win-nodrag();
 
@@ -36,10 +45,11 @@ body {
 	right: 0px;
 	margin: @window-padding;
 
-	.ui-button-rect {
-		width: 24px;
-		padding: 5px;
-	}
+	
+}
+.ui-button-rect {
+	width: 24px;
+	padding: 5px;
 }
 
 #edit-space {
