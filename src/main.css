@@ -26,6 +26,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 }
 .centered-h {
   position: absolute;
@@ -551,6 +552,34 @@
 }
 #page-container .content[data-type="textbox"][data-can_drag="false"] .markdown-body {
   display: none;
+}
+#page-container .content[data-type="equation"] {
+  padding: 3px;
+}
+#page-container .content[data-type="equation"] .textbox {
+  position: absolute;
+  left: 0px;
+  bottom: 3px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  outline: none;
+}
+#page-container .content[data-type="equation"] .equation {
+  width: 100%;
+  height: 100%;
+}
+#page-container .content[data-type="equation"][data-can_drag="true"] .textbox {
+  display: none;
+}
+#page-container .content[data-type="equation"][data-can_drag="true"] .equation .MathJax {
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 }
 :root {
   --page-width: 0px;

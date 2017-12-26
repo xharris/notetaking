@@ -13,6 +13,21 @@
 		<!-- Markdown CSS -->
 		<link rel="stylesheet" href="../node_modules/github-markdown-css/github-markdown.css"/>
 
+		<!-- MathJax + mathjs -->
+		<!--script src="../node_modules/mathjs/dist/math.min.js"></script-->
+		<script src="../node_modules/mathjax/MathJax.js">
+			MathJax.Hub.Config({
+			    extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+			    jax: ["input/TeX","output/HTML-CSS"],
+			    messageStyle: "none",
+			    tex2jax: {
+			        inlineMath: [['$','$'],["\\(","\\)"]],
+			        processEscapes: true,
+			        preview: "none"
+			    },
+			});
+		</script>
+
 		<!-- Length: unit conversion -->
 		<script src="includes/length.min.js"></script>
 
@@ -25,6 +40,7 @@
 
 		<script src="js/drag_container.js"></script>
 		<script src="js/textbox.js"></script>
+		<script src="js/equation.js"></script>
 		<script src="js/page.js"></script>
 		<script src="main.js"></script>
 

@@ -21,11 +21,11 @@ function dragElement(elmnt) {
       pos3 = e.clientX;
       pos4 = e.clientY;
 
-      if (e.offsetX < e.target.clientWidth - resize_handle_box || e.offsetY < e.target.clientHeight - resize_handle_box) {
+      //if (e.offsetX < e.target.clientWidth - resize_handle_box || e.offsetY < e.target.clientHeight - resize_handle_box) {
   	    document.onmouseup = closeDragElement;
   	    // call a function whenever the cursor moves:
   	    document.onmousemove = elementDrag;
-  	  }
+  	  //}
     }
   }
 
@@ -52,6 +52,28 @@ function dragElement(elmnt) {
   }
 }
 
+var selected = null, // Object of the element to be moved
+    x_pos = 0, y_pos = 0, // Stores x & y coordinates of the mouse pointer
+    x_elem = 0, y_elem = 0; // Stores top, left values (edge) of the element
+
+// Will be called when user starts dragging an element
+function _drag_init(elem) {
+    // Store the object of the element which needs to be moved
+    selected = elem;
+    x_elem = x_pos - selected.offsetLeft;
+    y_elem = y_pos - selected.offsetTop;
+}
+
+// Will be called when user dragging an element
+function _move_elem(e) {
+    x_pos = document.all ? window.event.clientX : e.pageX;
+    y_pos = document.all ? window.event.clientY : e.pageY;
+    if (selected !== null) {
+        selected.style.left = (x_pos - x_elem) + 'px';
+        selected.style.top = (y_pos - y_elem) + 'px';
+    }
+}
+
 class DragContainer {
 	constructor (x, y) {
 		this.guid = guid()
@@ -66,6 +88,11 @@ class DragContainer {
 		this.handle.dataset.guid = this.guid;
 		this.handle.classList.add("drag-handle");
     this.handle.dataset.can_drag = true;
+
+    this.handle.onmousedown = function() {
+      _drag_init(this);
+      return false;
+    }
 
 		this.content = document.createElement("div");
 		this.content.classList.add("content");
@@ -122,7 +149,6 @@ class DragContainer {
   }
 
   get x() {
-    console.log(this.drag_container.getBoundingClientRect());
     return this.drag_container.getBoundingClientRect().x;
   }
 

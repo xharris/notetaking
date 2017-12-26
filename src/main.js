@@ -57,11 +57,12 @@ var app = {
 
 	add: {
 		Textbox: function(page, x, y) { app.elements.push(new Textbox(app, page, x, y)); },
-		Equation: function(page, x, y) {}
+		Equation: function(page, x, y) { app.elements.push(new Equation(app, page, x, y)); }
 	},
 
 	load: {
-		Textbox: function(data) {app.elements.push(Textbox.load(app, data));}
+		Textbox: function(data) {app.elements.push(Textbox.load(app, data));},
+		Equation: function(data) {app.elements.push(Equation.load(app,data));}
 	},
 
 	placeSelectedElement: function(page, x, y) {

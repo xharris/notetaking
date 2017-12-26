@@ -1,34 +1,24 @@
-class Textbox {
+var math = require('mathjs');
+
+
+
+class Equation {
 	constructor (app, page, x, y) {
 		this.x = x;
 		this.y = y;
 		this.guid = guid();
 		this.text = "";
 		this.page = page;
-		this.markdown_options = {
-			simpleLineBreaks: true,
-			strikethrough: true,
-			excludeTrailingPuncuationFromURLs: true
-		}
 
-		this.el_textbox = document.createElement("textarea");
+		this.el_textbox = document.createElement("input");
 		this.el_textbox.classList.add("textbox");
 		this.el_textbox.dataset.guid = this.guid;
 		this.el_textbox.obj_ref = this;
 		this.el_textbox.addEventListener('input', this.onInput, false);
-	    this.el_textbox.addEventListener('keydown',function(e){
-	        var TABKEY = 9;
-	        if(e.keyCode == TABKEY) {
-	            this.value += "    ";
-	            if(e.preventDefault) {
-	                e.preventDefault();
-	            }
-	            return false;
-	        }
-	    },false);
 
-	    this.el_markdown = document.createElement("div")
-	    this.el_markdown.classList.add("markdown-body");
+	    this.el_equation = document.createElement("div")
+	    this.el_equation.classList.add("equation");
+	    this.el_equation.id = "equation"+this.guid;
 
 		this.drag_box = new DragContainer(this.x, this.y);
 		this.drag_box.appendTo(page);
@@ -39,26 +29,10 @@ class Textbox {
 		}, this);
 
 		this.drag_box.getContentElement().appendChild(this.el_textbox);
-		this.drag_box.getContentElement().appendChild(this.el_markdown);
-		this.drag_box.setContentType("textbox");
+		this.drag_box.getContentElement().appendChild(this.el_equation);
+		this.drag_box.setContentType("equation");
 		this.drag_box.width = 150;
 		this.drag_box.height = 100;
-
-		/*
-		this.editor = new Quill(this.el_textbox, {
-			placeholder: "Text...",
-			modules: {
-				toolbar: [
-					
-						['bold','italic','underline','strike'],
-						['blockquote', 'code-block'],
-						[{ 'list': 'ordered'}, { 'list': 'bullet' }]
-					
-				]
-			},
-			theme: 'snow'
-		});
-		*/
 
 		app.spreadGUID(this.drag_box, this.guid);
 
@@ -70,8 +44,24 @@ class Textbox {
 			}
 		});
 
+		this.el_textbox.addEventListener('input', function() {
+			this.obj_ref.refreshMathJax();
+		})
+
 	    this.setText(this.text);
 		console.log("Textbox("+x+", "+y+"):"+this.guid);
+	}
+
+	refreshMathJax() {
+		var node = null;
+		try {
+			var node = math.parse(this.el_textbox.value);
+		} catch (err) {
+			this.el_equation.innerHTML = '<span style="color: red;">'+err.toString()+'</span>';
+		}
+		var latex = node ? node.toTex({parenthesis: 'keep', implicit: 'hide'}) : '';
+		this.el_equation.innerHTML = "${"+latex+"}$";
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	}
 
 	onInput (e) {
@@ -82,25 +72,15 @@ class Textbox {
 	setText (text) {
 		this.text = text;
 		this.el_textbox.value = text;
-		this.refreshMarkdown();
+		this.refreshMathJax();
 	}
 
 	enable () {
-		//this.editor.enable();
-		//this.editor.focus();
 		this.el_textbox.focus();
 	}
 
 	disable () {
-		//this.editor.disable();
 		this.text = this.el_textbox.value;
-		this.refreshMarkdown();
-	}
-
-	refreshMarkdown() {
-		var converter = new showdown.Converter(this.markdown_options);
-		var html = converter.makeHtml(this.text);	
-		this.el_markdown.innerHTML = html;
 	}
 
 	edit () {
@@ -117,14 +97,14 @@ class Textbox {
 
 	remove () {
 		this.el_textbox.remove();
-		this.el_markdown.remove();
+		this.el_equation.remove();
 		this.drag_box.remove();
 	}
 
 	save () {
 		return {
 			text: this.text,
-			type: 'Textbox',
+			type: 'Equation',
 			x: this.drag_box.x - this.page.getBoundingClientRect().x,
 			y: this.drag_box.y - this.page.getBoundingClientRect().y,
 			width: this.drag_box.width,
@@ -136,7 +116,7 @@ class Textbox {
 	static load (app, data) {
 		var page = app.getPage(parseInt(data.page)).el_page;
 
-		var textbox = new Textbox(app, page, data.x, data.y);
+		var textbox = new Equation(app, page, data.x, data.y);
 		textbox.drag_box.width = data.width;
 		textbox.drag_box.height = data.height;
 		textbox.setText(data.text);
@@ -144,3 +124,5 @@ class Textbox {
 		return textbox;
 	}
 }
+
+
