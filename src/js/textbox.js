@@ -123,6 +123,8 @@ class Textbox {
 	}
 
 	edit () {
+		this.text = this.text.replaceAll("&nbsp;"," ");
+		this.el_textbox.value = this.text;
 		this.el_textbox.classList.add("edit-mode")
 		this.enable();
 		this.drag_box.disableDrag();

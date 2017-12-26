@@ -70,7 +70,8 @@ class Equation {
 		} catch (err) {
 			node = this.el_textbox.value;
 		}
-		var latex = node ? node.toTex({parenthesis: 'keep', implicit: 'hide'}) : node;
+		var latex = node;
+		if (node.toTex) latex = node.toTex({parenthesis: 'keep', implicit: 'hide'});
 		this.el_equation.innerHTML = "$"+latex+"$";
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	}
