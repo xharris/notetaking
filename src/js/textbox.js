@@ -16,10 +16,30 @@ class Textbox {
 		this.el_textbox.dataset.guid = this.guid;
 		this.el_textbox.obj_ref = this;
 		this.el_textbox.addEventListener('input', this.onInput, false);
+
+		function insertAtCursor(myField, myValue) {
+		    //IE support
+		    if (document.selection) {
+		        //myField.focus();
+		        sel = document.selection.createRange();
+		        sel.text = myValue;
+		    }
+		    //MOZILLA and others
+		    else if (myField.selectionStart || myField.selectionStart == '0') {
+		        var startPos = myField.selectionStart;
+		        var endPos = myField.selectionEnd;
+		        myField.value = myField.value.substring(0, startPos)
+		            + myValue
+		            + myField.value.substring(endPos, myField.value.length);
+		    } else {
+		        myField.value += myValue;
+		    }
+		}
 	    this.el_textbox.addEventListener('keydown',function(e){
 	        var TABKEY = 9;
 	        if(e.keyCode == TABKEY) {
-	            this.value += "    ";
+	            //this.value += "    ";
+	            insertAtCursor(this, "    ");
 	            if(e.preventDefault) {
 	                e.preventDefault();
 	            }
@@ -44,21 +64,13 @@ class Textbox {
 		this.drag_box.width = 150;
 		this.drag_box.height = 100;
 
-		/*
-		this.editor = new Quill(this.el_textbox, {
-			placeholder: "Text...",
-			modules: {
-				toolbar: [
-					
-						['bold','italic','underline','strike'],
-						['blockquote', 'code-block'],
-						[{ 'list': 'ordered'}, { 'list': 'bullet' }]
-					
-				]
-			},
-			theme: 'snow'
-		});
-		*/
+		// context menu
+		this.drag_box.handle.txtbox_ref = this;
+		this.drag_box.handle.addEventListener('contextmenu', function(ev){
+			ev.preventDefault();
+			this.txtbox_ref.onContextMenu(ev);
+			return false;
+		}, false);
 
 		app.spreadGUID(this.drag_box, this.guid);
 
@@ -74,6 +86,13 @@ class Textbox {
 		console.log("Textbox("+x+", "+y+"):"+this.guid);
 	}
 
+	onContextMenu (ev) {
+		var menu = new nwGUI.Menu();
+		var this_ref = this;
+		menu.append(new nwGUI.MenuItem({label:'delete', click: function() {this_ref.remove();}}))
+		menu.popup(ev.x, ev.y);
+	}
+
 	onInput (e) {
 		var this_ref = e.target.obj_ref;
 		this_ref.text = e.target.value;
@@ -84,7 +103,6 @@ class Textbox {
 		this.el_textbox.value = text;
 		this.refreshMarkdown();
 	}
-
 	enable () {
 		//this.editor.enable();
 		//this.editor.focus();
@@ -98,6 +116,7 @@ class Textbox {
 	}
 
 	refreshMarkdown() {
+		this.text = this.text.replaceAll(/[^\S\n]/,"&nbsp;");
 		var converter = new showdown.Converter(this.markdown_options);
 		var html = converter.makeHtml(this.text);	
 		this.el_markdown.innerHTML = html;

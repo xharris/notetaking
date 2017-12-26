@@ -512,7 +512,7 @@
   background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 14px;
-  line-height: 16px;
+  line-height: 20px;
 }
 #page-container .content[data-type="textbox"] .textbox:not(.edit-mode) {
   pointer-events: none;
@@ -528,7 +528,7 @@
 #page-container .content[data-type="textbox"] .markdown-body,
 #page-container .content[data-type="textbox"] .markdown-body * {
   font-size: 14px;
-  line-height: 16px;
+  line-height: 20px;
 }
 #page-container .content[data-type="textbox"] .ql-toolbar {
   position: absolute;

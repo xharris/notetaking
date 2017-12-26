@@ -1,12 +1,12 @@
 class Page {
-	constructor (app, width, height, number) {
-		this.width = width;
-		this.height= height;
+	constructor (app, number) {
+		var width = app.inToPx(app.settings.page_width);
+		var height= app.inToPx(app.settings.page_height);
+
 		this.number= number;
 		this.guid = guid();
 
 		this.el_page = document.createElement("div");
-		this.el_page.style.top = ((this.height)*this.number)+"px";
 		this.el_page.classList.add("page");
 		this.el_page.dataset.guid = this.guid;
 		this.el_page.dataset.number = this.number;

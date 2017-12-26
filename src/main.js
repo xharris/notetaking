@@ -11,7 +11,8 @@ var app = {
 	current_file: '',
 
 	settings: {
-		page_width: 8
+		page_width: 8.5,
+		page_height: 11
 	},
 
 	getElement: function(sel) {
@@ -28,7 +29,7 @@ var app = {
 
 	addPage: function() {
 		var number = app.pages.length;
-		app.pages.push(new Page(app, app.settings.page_width, app.settings.page_height, number));
+		app.pages.push(new Page(app, number));
 	},
 
 	getPage: function(number) {
@@ -52,7 +53,7 @@ var app = {
 	},
 
 	inToPx: function(inches) {
-		return Length.toPx(app.getElement("body"), inches+"in");
+		return Length.toPx(app.getElement("body"), inches.toString()+"in");
 	},
 
 	add: {
@@ -151,13 +152,10 @@ var app = {
 }
 
 nwWIN.on('loaded', function() {
-	nwWIN.showDevTools();
+	//nwWIN.showDevTools();
 
-	app.settings.page_width = app.inToPx("8.5");
-	app.settings.page_height = app.inToPx("11");
-
-	app.getElement("html").style.setProperty("--page-width", app.settings.page_width+"px");
-	app.getElement("html").style.setProperty("--page-height", app.settings.page_height+"px");
+	app.getElement("html").style.setProperty("--page-width", app.inToPx(app.settings.page_width)+"px");
+	app.getElement("html").style.setProperty("--page-height", app.inToPx(app.settings.page_height)+"px");
 
 	// add first page
 	app.addPage();

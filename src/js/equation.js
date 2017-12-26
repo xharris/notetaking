@@ -1,7 +1,3 @@
-var math = require('mathjs');
-
-
-
 class Equation {
 	constructor (app, page, x, y) {
 		this.x = x;
@@ -34,6 +30,14 @@ class Equation {
 		this.drag_box.width = 150;
 		this.drag_box.height = 100;
 
+		// context menu
+		this.drag_box.handle.txtbox_ref = this;
+		this.drag_box.handle.addEventListener('contextmenu', function(ev){
+			ev.preventDefault();
+			this.txtbox_ref.onContextMenu(ev);
+			return false;
+		}, false);
+
 		app.spreadGUID(this.drag_box, this.guid);
 
 		var this_ref = this;
@@ -52,15 +56,22 @@ class Equation {
 		console.log("Textbox("+x+", "+y+"):"+this.guid);
 	}
 
+	onContextMenu (ev) {
+		var menu = new nwGUI.Menu();
+		var this_ref = this;
+		menu.append(new nwGUI.MenuItem({label:'delete', click: function() {this_ref.remove();}}))
+		menu.popup(ev.x, ev.y);
+	}
+
 	refreshMathJax() {
 		var node = null;
 		try {
-			var node = math.parse(this.el_textbox.value);
+			node = math.parse(this.el_textbox.value);
 		} catch (err) {
-			this.el_equation.innerHTML = '<span style="color: red;">'+err.toString()+'</span>';
+			node = this.el_textbox.value;
 		}
-		var latex = node ? node.toTex({parenthesis: 'keep', implicit: 'hide'}) : '';
-		this.el_equation.innerHTML = "${"+latex+"}$";
+		var latex = node ? node.toTex({parenthesis: 'keep', implicit: 'hide'}) : node;
+		this.el_equation.innerHTML = "$"+latex+"$";
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	}
 
